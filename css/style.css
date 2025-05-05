@@ -1,0 +1,76 @@
+*,
+*::after,
+*::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --charcoal-green: #2C3930;
+    --olive-gray: #3F4F44;
+    --warm-tan: #A27B5C;
+    --light-beige: #DCD7C9;
+}
+
+body{
+    background-color: var(--charcoal-green);
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.grid-container{
+    display: grid;
+    grid-template-columns: 20% 55% 1fr;
+    gap: 8px;
+    height: 100vh;
+}
+
+.box {
+    background-color: var(--olive-gray);
+    color: var(--light-beige);
+    font-weight: bold;
+}
+
+.city-list{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+    padding: 15px 15px;
+}
+
+.add-city{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.add-city button{
+    background-color: var(--light-beige);
+    color: var(--charcoal-green);
+    font-family: inherit;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.7);
+    padding: 5px 20px;
+    width: 50%;
+    cursor: pointer;
+}
+
+.cities{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    width: 100%;
+}
+
+.cities p{
+    background-color: var(--light-beige);
+    color: var(--charcoal-green);
+    font-weight: bold;
+    border-radius: 5px;
+    box-shadow: 3px 3px 3px rgba(0,0,0,0.7);
+    padding: 5px 10px;
+    cursor: pointer;
+}
