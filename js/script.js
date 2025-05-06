@@ -4,9 +4,13 @@ const submitAddCityButton = document.getElementById("submit");
 const modal = document.getElementById("modal");
 const cityInput = document.getElementById("city");
 const countryInput = document.getElementById("country");
-const cityListDisplay = document.getElementById("cities");
+const cityListText = document.getElementById("cities");
+const headerTitleText = document.getElementById("header-title");
+const chanceOfRainText = document.getElementById("chance-of-rain");
+const temperatureText = document.getElementById("temperature");
 const contentDisplay = document.getElementById("content");
 const sevenDayForecastsDisplay = document.getElementById("forecasts");
+
 
 
 
@@ -70,26 +74,62 @@ const addCity = (data) => {
 
     localStorage.setItem("cities",JSON.stringify(cityLists));
 
-    cityListDisplay.textContent = "";
+    cityListText.textContent = "";
     showCityLists();
 
 }
 
 // Show City
 const showCityLists = () => {
+    cityListText.textContent = "";
+    
     const cityLists = JSON.parse(localStorage.getItem("cities") || "[]");
 
     if(cityLists.length === 0){
         const listCity = document.createElement("span");
         listCity.textContent = "No cities yet, add one!";
-        cityListDisplay.appendChild(listCity);
+        cityListText.appendChild(listCity);
     }
 
     cityLists.forEach(city => {
         const listCity = document.createElement("p");
         listCity.textContent = `${city.city}, ${city.country}`;
-        cityListDisplay.appendChild(listCity);
+
+        listCity.addEventListener("click", () => {
+            const cityLat = city.lat;
+            const cityLon = city.lon;
+            weatherInfo(cityLat, cityLon);
+        })
+
+        cityListText.appendChild(listCity);
     });
+}
+
+// Show weather information
+const weatherInfo = async (lat,lon) => {
+    try {
+        
+        loadingWeather();
+
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_probability_max&hourly=temperature_2m,uv_index&timezone=auto&forecast_days=1`);
+        if(!response.ok){
+            throw new Error(`Error : ${response.status}`)
+        }
+        const data = await response.json();
+        headerTitleText.textContent = `Timezone: ${data.timezone}`;
+        chanceOfRainText.textContent = `Chance of rain: ${data.daily.precipitation_probability_max}%`;
+        temperatureText.textContent = `${(data.hourly.temperature_2m.reduce((a, b) => a + b) / 24).toFixed(1)}\u00B0C`;  
+
+    } catch (error) {
+        console.log(`Fetch failed:`, error.message);
+        alert("An error occurred while fetching weather information.");
+    }
+}
+
+const loadingWeather = () => {
+    headerTitleText.textContent = "Loading weather...";
+    chanceOfRainText.textContent = "";
+    temperatureText.textContent = "";
 }
 
 // Add City
