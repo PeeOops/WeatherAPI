@@ -23,6 +23,7 @@ body{
     grid-template-columns: 20% 45% 1fr;
     gap: 5px;
     height: 100vh;
+    overflow: hidden;
 }
 
 .box {
@@ -74,6 +75,7 @@ dialog{
     align-items: center;
     gap: 25px;
     padding: 15px 30px;
+    height: 100%;
 }
 
 .add-city{
@@ -100,7 +102,13 @@ dialog{
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    overflow: auto;
+    max-height:  550px;
+    padding-right: 10px;
+    overflow-y: auto;
+}
+
+.cities span{
+    text-align: center;
 }
 
 .cities p{

@@ -16,6 +16,8 @@ addCityButton.addEventListener("click", () => {
 })
 
 cancelAddCityButton.addEventListener("click", () => {
+    cityInput.value = "";
+    countryInput.value = "";
     modal.close();
 })
 
@@ -28,10 +30,10 @@ const defaultCity = [
         lon: 13.3989367
     },
     {
-        city: "Jakarta",
-        country: "Indonesia",
-        lat: -6.1754049,
-        lon: 106.8271680
+        city: "Seoul",
+        country: "South Korea",
+        lat: 37.5666791,
+        lon: 126.9782914
     },
 ]
 
@@ -42,7 +44,7 @@ if(!localStorage.getItem("cities")){
 
 const addCity = (data) => {
 
-    const cityLists = JSON.parse(localStorage.getItem("cities") || []);
+    const cityLists = JSON.parse(localStorage.getItem("cities") || "[]");
 
     if(data.length === 0){
         alert("Invalid city or country name");
@@ -57,14 +59,37 @@ const addCity = (data) => {
         
     }))[0];
 
+    // Check for duplicate city
+    const exists = cityLists.some(item => item.city === newCity.city && item.country === newCity.country);
+    if (exists) {
+        alert("City already exists in the list.");
+        return;
+    }
+
     cityLists.push(newCity);
 
     localStorage.setItem("cities",JSON.stringify(cityLists));
+
+    cityListDisplay.textContent = "";
+    showCityLists();
+
 }
 
 // Show City
 const showCityLists = () => {
-    
+    const cityLists = JSON.parse(localStorage.getItem("cities") || "[]");
+
+    if(cityLists.length === 0){
+        const listCity = document.createElement("span");
+        listCity.textContent = "No cities yet, add one!";
+        cityListDisplay.appendChild(listCity);
+    }
+
+    cityLists.forEach(city => {
+        const listCity = document.createElement("p");
+        listCity.textContent = `${city.city}, ${city.country}`;
+        cityListDisplay.appendChild(listCity);
+    });
 }
 
 // Add City
@@ -87,8 +112,6 @@ submitAddCityButton.addEventListener("click", async () => {
         const data = await response.json();
         addCity(data);
 
-
-
     } catch (error) {
         console.log(`Fetch failed:`, error.message);
         alert("An error occurred while fetching city data.");
@@ -99,6 +122,9 @@ submitAddCityButton.addEventListener("click", async () => {
     countryInput.value = "";
     modal.close();
 
+
 })
+
+showCityLists();
 
 
