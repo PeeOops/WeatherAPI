@@ -112,13 +112,21 @@ dialog{
 }
 
 .cities p{
-    background-color: var(--light-beige);
-    color: var(--charcoal-green);
     font-weight: bold;
     border-radius: 5px;
     box-shadow: 3px 3px 3px rgba(0,0,0,0.7);
     padding: 10px 10px;
     cursor: pointer;
+}
+
+.cities-default{
+    background-color: var(--light-beige);
+    color: var(--charcoal-green);
+}
+
+.selected{
+    background-color: var(--charcoal-green);
+    color: var(--light-beige);
 }
 
 /* Content Header */

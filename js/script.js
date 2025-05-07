@@ -148,8 +148,15 @@ const showCityLists = () => {
     cityLists.forEach(city => {
         const listCity = document.createElement("p");
         listCity.textContent = `${city.city}, ${city.country}`;
+        listCity.classList.add("cities-default");
 
         listCity.addEventListener("click", () => {
+            // Remove 'selected' class from all <p> tags inside cityListText
+            const allCities = cityListText.querySelectorAll("p");
+            allCities.forEach(p => p.classList.remove("selected"));
+
+            // Add 'selected' to the clicked one
+            listCity.classList.add("selected");
             const cityLat = city.lat;
             const cityLon = city.lon;
             weatherInfo(cityLat, cityLon);
