@@ -8,6 +8,7 @@ const cityListText = document.getElementById("cities");
 const headerTitleText = document.getElementById("header-title");
 const chanceOfRainText = document.getElementById("chance-of-rain");
 const temperatureText = document.getElementById("temperature");
+const realFeelText = document.getElementById("real-feel");
 const contentDisplay = document.getElementById("content");
 const sevenDayForecastsDisplay = document.getElementById("forecasts");
 
@@ -111,14 +112,15 @@ const weatherInfo = async (lat,lon) => {
         
         loadingWeather();
 
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=precipitation_probability_max&hourly=temperature_2m,uv_index&timezone=auto&forecast_days=1`);
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max,wind_speed_10m_max,weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&hourly=weather_code,temperature_2m&timezone=auto&forecast_days=1`);
         if(!response.ok){
             throw new Error(`Error : ${response.status}`)
         }
         const data = await response.json();
         headerTitleText.textContent = `Timezone: ${data.timezone}`;
         chanceOfRainText.textContent = `Chance of rain: ${data.daily.precipitation_probability_max}%`;
-        temperatureText.textContent = `${(data.hourly.temperature_2m.reduce((a, b) => a + b) / 24).toFixed(1)}\u00B0C`;  
+        temperatureText.textContent = `${((parseFloat(data.daily.temperature_2m_max) + parseFloat(data.daily.temperature_2m_min)) / 2).toFixed(1)}\u00B0C`
+        realFeelText.textContent = `${((parseFloat(data.daily.apparent_temperature_max) + parseFloat(data.daily.apparent_temperature_min)) / 2).toFixed(1)}\u00B0C`
 
     } catch (error) {
         console.log(`Fetch failed:`, error.message);
