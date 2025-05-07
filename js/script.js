@@ -14,6 +14,12 @@ const uvIndexText = document.getElementById("uv-index");
 const humidityText = document.getElementById("humidity");
 const currentWeatherText = document.getElementById("current-weather");
 const dayNightText = document.getElementById("day-night");
+const tempOneText = document.getElementById("temp-1");
+const tempTwoText = document.getElementById("temp-2");
+const tempThreeText = document.getElementById("temp-3");
+const tempFourText = document.getElementById("temp-4");
+const tempFiveText = document.getElementById("temp-5");
+const tempSixText = document.getElementById("temp-6");
 const contentDisplay = document.getElementById("content");
 const sevenDayForecastsDisplay = document.getElementById("forecasts");
 
@@ -100,6 +106,7 @@ if(!localStorage.getItem("cities")){
     localStorage.setItem("cities", JSON.stringify(defaultCity));
 }
 
+// Add city
 const addCity = (data) => {
 
     const cityLists = JSON.parse(localStorage.getItem("cities") || "[]");
@@ -167,6 +174,41 @@ const showCityLists = () => {
 }
 
 // Show weather information
+
+const showWeather = (data) => {
+
+    // Header
+    headerTitleText.textContent = `Timezone: ${data?.timezone ?? "-"}`;
+    chanceOfRainText.textContent = `Chance of rain: ${parseFloat(data?.daily.precipitation_probability_max) ?? "-"}%`;
+    temperatureText.textContent = `${parseFloat(data?.current?.temperature_2m).toFixed(1)}\u00B0C`;
+
+    // Today's forecasts
+    tempOneText.textContent = `${data?.hourly?.temperature_2m[0] ?? "-"}\u00B0C`;
+    tempTwoText.textContent = `${data?.hourly?.temperature_2m[3] ?? "-"}\u00B0C`;
+    tempThreeText.textContent = `${data?.hourly?.temperature_2m[7] ?? "-"}\u00B0C`;
+    tempFourText.textContent = `${data?.hourly?.temperature_2m[11] ?? "-"}\u00B0C`;
+    tempFiveText.textContent = `${data?.hourly?.temperature_2m[15] ?? "-"}\u00B0C`;
+    tempSixText.textContent = `${data?.hourly?.temperature_2m[19] ?? "-"}\u00B0C`;
+
+    // Air condition
+    realFeelText.textContent = `${parseFloat(data?.current?.apparent_temperature).toFixed(1)}\u00B0C`;
+    windSpeedText.textContent = `${data?.current?.wind_speed_10m ?? "-"} km/h`;
+    uvIndexText.textContent = `${data?.daily?.uv_index_max ?? "-"}`;
+    humidityText.textContent = `${data?.current?.relative_humidity_2m ?? "-"}%`;
+    const currentWeatherCondition = weatherCodes.find(weather => weather.code === data.current.weather_code);
+    currentWeatherText.textContent = currentWeatherCondition?.description ?? "-";
+    dayNightText.textContent = data?.current?.is_day === 1 ? "Day" : data?.current?.is_day === 0 ? "Night" : "-";
+}
+
+// Loading on fetch
+const loadingWeather = () => {
+    headerTitleText.textContent = "Loading weather...";
+    chanceOfRainText.textContent = "";
+    temperatureText.textContent = "";
+}
+
+
+// Fetch weather information
 const weatherInfo = async (lat,lon) => {
     try {
         
@@ -177,16 +219,7 @@ const weatherInfo = async (lat,lon) => {
             throw new Error(`Error : ${response.status}`)
         }
         const data = await response.json();
-        headerTitleText.textContent = `Timezone: ${data?.timezone ?? "-"}`;
-        chanceOfRainText.textContent = `Chance of rain: ${parseFloat(data?.daily.precipitation_probability_max) ?? "-"}%`;
-        temperatureText.textContent = `${parseFloat(data?.current?.temperature_2m).toFixed(1)}\u00B0C`;
-        realFeelText.textContent = `${parseFloat(data?.current?.apparent_temperature).toFixed(1)}\u00B0C`;
-        windSpeedText.textContent = `${data?.current?.wind_speed_10m ?? "-"} km/h`;
-        uvIndexText.textContent = `${data?.daily?.uv_index_max ?? "-"}`;
-        humidityText.textContent = `${data?.current?.relative_humidity_2m ?? "-"}%`;
-        const currentWeatherCondition = weatherCodes.find(weather => weather.code === data.current.weather_code);
-        currentWeatherText.textContent = currentWeatherCondition?.description ?? "-";
-        dayNightText.textContent = data?.current?.is_day === 1 ? "Day" : data?.current?.is_day === 0 ? "Night" : "-";
+        showWeather(data);
 
 
     } catch (error) {
@@ -195,13 +228,9 @@ const weatherInfo = async (lat,lon) => {
     }
 }
 
-const loadingWeather = () => {
-    headerTitleText.textContent = "Loading weather...";
-    chanceOfRainText.textContent = "";
-    temperatureText.textContent = "";
-}
 
-// Add City
+
+// Add city button
 submitAddCityButton.addEventListener("click", async () => {
     const city = cityInput.value.trim().toLowerCase();
     const country = countryInput.value.trim().toLowerCase();
@@ -211,6 +240,7 @@ submitAddCityButton.addEventListener("click", async () => {
         return;
     }
 
+    // Fetch city
     try {
         const response = await fetch(`https://nominatim.openstreetmap.org/search?city=${city}&country=${country}&format=json&addressdetails=1`);
 
