@@ -12,6 +12,8 @@ const realFeelText = document.getElementById("real-feel");
 const windSpeedText = document.getElementById("wind-speed");
 const uvIndexText = document.getElementById("uv-index");
 const humidityText = document.getElementById("humidity");
+const currentWeatherText = document.getElementById("current-weather");
+const dayNightText = document.getElementById("day-night");
 const contentDisplay = document.getElementById("content");
 const sevenDayForecastsDisplay = document.getElementById("forecasts");
 
@@ -163,18 +165,21 @@ const weatherInfo = async (lat,lon) => {
         
         loadingWeather();
 
-        const response = await fetch(`http://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max&hourly=weather_code,temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,precipitation&timezone=auto&forecast_days=1`);
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max&hourly=weather_code,temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,precipitation,is_day&timezone=auto&forecast_days=1`);
         if(!response.ok){
             throw new Error(`Error : ${response.status}`)
         }
         const data = await response.json();
         headerTitleText.textContent = `Timezone: ${data.timezone}`;
-        chanceOfRainText.textContent = `Chance of rain: ${data.current.precipitation}%`;
+        chanceOfRainText.textContent = `Chance of rain: ${parseFloat(data.daily.precipitation_probability_max)}%`;
         temperatureText.textContent = `${parseFloat(data.current.temperature_2m).toFixed(1)}\u00B0C`;
         realFeelText.textContent = `${parseFloat(data.current.apparent_temperature).toFixed(1)}\u00B0C`;
         windSpeedText.textContent = `${data.current.wind_speed_10m} km/h`;
         uvIndexText.textContent = `${data.daily.uv_index_max}`;
-        humidityText.textContent = `${data.current.relative_humidity_2m}%`
+        humidityText.textContent = `${data.current.relative_humidity_2m}%`;
+        const currentWeatherCondition = weatherCodes.find(weather => weather.code === data.current.weather_code);
+        currentWeatherText.textContent = currentWeatherCondition.description;
+        dayNightText.textContent = data.current.is_day === 1 ? "Day" : "Night";
 
 
     } catch (error) {
@@ -191,8 +196,8 @@ const loadingWeather = () => {
 
 // Add City
 submitAddCityButton.addEventListener("click", async () => {
-    const city = cityInput.value.toLowerCase();
-    const country = countryInput.value.toLowerCase();
+    const city = cityInput.value.trim().toLowerCase();
+    const country = countryInput.value.trim().toLowerCase();
 
     if(!city || !country){
         alert("Please check your input");
