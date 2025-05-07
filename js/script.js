@@ -180,13 +180,13 @@ const showWeather = (data) => {
     // Weather Image
     let backgroundPosition = "";
     if (data.current.weather_code === 0 && data.current.is_day === 1) {
-        backgroundPosition = "-450px 0"; // Clear day
+        backgroundPosition = "-430px -10px"; // Clear day
     } else if (data.current.weather_code === 0 && data.current.is_day === 0) {
         backgroundPosition = "-450px -300px"; // Clear night
     } else if ((data.current.weather_code >= 1 && data.current.weather_code <= 3) && data.current.is_day === 0) {
-        backgroundPosition = "-150px -300px"; // Cloudy night
+        backgroundPosition = "-150px -295px"; // Cloudy night
     } else if (data.current.weather_code === 3) {
-        backgroundPosition = "0 0"; // Overcast
+        backgroundPosition = "0 -20px"; // Overcast
     } else if (data.current.weather_code === 2) {
         backgroundPosition = "-150px 0"; // Partly cloudy
     } else if (data.current.weather_code === 1) {
