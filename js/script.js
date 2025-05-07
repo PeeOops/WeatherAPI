@@ -9,6 +9,9 @@ const headerTitleText = document.getElementById("header-title");
 const chanceOfRainText = document.getElementById("chance-of-rain");
 const temperatureText = document.getElementById("temperature");
 const realFeelText = document.getElementById("real-feel");
+const windSpeedText = document.getElementById("wind-speed");
+const uvIndexText = document.getElementById("uv-index");
+const humidityText = document.getElementById("humidity");
 const contentDisplay = document.getElementById("content");
 const sevenDayForecastsDisplay = document.getElementById("forecasts");
 
@@ -41,6 +44,54 @@ const defaultCity = [
         lon: 126.9782914
     },
 ]
+
+// WeatherCode
+
+const weatherCodes = [
+    // Clear & Cloudy
+    { code: 0, description: "Clear sky" },
+    { code: 1, description: "Mainly clear" },
+    { code: 2, description: "Partly cloudy" },
+    { code: 3, description: "Overcast" },
+  
+    // Fog & Visibility
+    { code: 45, description: "Fog" },
+    { code: 48, description: "Depositing rime fog" },
+  
+    // Drizzle
+    { code: 51, description: "Light drizzle" },
+    { code: 53, description: "Moderate drizzle" },
+    { code: 55, description: "Dense drizzle" },
+    { code: 56, description: "Light freezing drizzle" },
+    { code: 57, description: "Dense freezing drizzle" },
+  
+    // Rain
+    { code: 61, description: "Slight rain" },
+    { code: 63, description: "Moderate rain" },
+    { code: 65, description: "Heavy rain" },
+    { code: 66, description: "Light freezing rain" },
+    { code: 67, description: "Heavy freezing rain" },
+  
+    // Snow
+    { code: 71, description: "Slight snow fall" },
+    { code: 73, description: "Moderate snow fall" },
+    { code: 75, description: "Heavy snow fall" },
+    { code: 77, description: "Snow grains" },
+  
+    // Rain Showers
+    { code: 80, description: "Slight rain showers" },
+    { code: 81, description: "Moderate rain showers" },
+    { code: 82, description: "Violent rain showers" },
+  
+    // Snow Showers
+    { code: 85, description: "Slight snow showers" },
+    { code: 86, description: "Heavy snow showers" },
+  
+    // Thunderstorms
+    { code: 95, description: "Thunderstorm (no hail)" },
+    { code: 96, description: "Thunderstorm with slight hail" },
+    { code: 99, description: "Thunderstorm with heavy hail" }
+  ];
 
 // Set localStorage
 if(!localStorage.getItem("cities")){
@@ -112,15 +163,19 @@ const weatherInfo = async (lat,lon) => {
         
         loadingWeather();
 
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max,wind_speed_10m_max,weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&hourly=weather_code,temperature_2m&timezone=auto&forecast_days=1`);
+        const response = await fetch(`http://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max&hourly=weather_code,temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,precipitation&timezone=auto&forecast_days=1`);
         if(!response.ok){
             throw new Error(`Error : ${response.status}`)
         }
         const data = await response.json();
         headerTitleText.textContent = `Timezone: ${data.timezone}`;
-        chanceOfRainText.textContent = `Chance of rain: ${data.daily.precipitation_probability_max}%`;
-        temperatureText.textContent = `${((parseFloat(data.daily.temperature_2m_max) + parseFloat(data.daily.temperature_2m_min)) / 2).toFixed(1)}\u00B0C`
-        realFeelText.textContent = `${((parseFloat(data.daily.apparent_temperature_max) + parseFloat(data.daily.apparent_temperature_min)) / 2).toFixed(1)}\u00B0C`
+        chanceOfRainText.textContent = `Chance of rain: ${data.current.precipitation}%`;
+        temperatureText.textContent = `${parseFloat(data.current.temperature_2m).toFixed(1)}\u00B0C`;
+        realFeelText.textContent = `${parseFloat(data.current.apparent_temperature).toFixed(1)}\u00B0C`;
+        windSpeedText.textContent = `${data.current.wind_speed_10m} km/h`;
+        uvIndexText.textContent = `${data.daily.uv_index_max}`;
+        humidityText.textContent = `${data.current.relative_humidity_2m}%`
+
 
     } catch (error) {
         console.log(`Fetch failed:`, error.message);
