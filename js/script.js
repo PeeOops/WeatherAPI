@@ -6,6 +6,7 @@ const cityInput = document.getElementById("city");
 const countryInput = document.getElementById("country");
 const cityListText = document.getElementById("cities");
 const headerTitleText = document.getElementById("header-title");
+const headerWeatherImage = document.getElementById("header-image");
 const chanceOfRainText = document.getElementById("chance-of-rain");
 const temperatureText = document.getElementById("temperature");
 const realFeelText = document.getElementById("real-feel");
@@ -176,9 +177,36 @@ const showCityLists = () => {
 // Show weather information
 
 const showWeather = (data) => {
+    // Weather Image
+    let backgroundPosition = "";
+    if (data.current.weather_code === 0 && data.current.is_day === 1) {
+        backgroundPosition = "-450px 0"; // Clear day
+    } else if (data.current.weather_code === 0 && data.current.is_day === 0) {
+        backgroundPosition = "-450px -300px"; // Clear night
+    } else if ((data.current.weather_code >= 1 && data.current.weather_code <= 3) && data.current.is_day === 0) {
+        backgroundPosition = "-150px -300px"; // Cloudy night
+    } else if (data.current.weather_code === 3) {
+        backgroundPosition = "0 0"; // Overcast
+    } else if (data.current.weather_code === 2) {
+        backgroundPosition = "-150px 0"; // Partly cloudy
+    } else if (data.current.weather_code === 1) {
+        backgroundPosition = "-300px 0"; // Mostly clear
+    } else if (data.current.weather_code >= 45 && data.current.weather_code <= 48) {
+        backgroundPosition = "-300px -300px"; // Fog or rime fog
+    } else if ((data.current.weather_code >= 51 && data.current.weather_code <= 67) || (data.current.weather_code >= 80 && data.current.weather_code <= 82)) {
+        backgroundPosition = "0 -150px"; // Drizzle or rain showers
+    } else if (data.current.weather_code === 95) {
+        backgroundPosition = "-150px -150px"; // Thunderstorm
+    } else if (data.current.weather_code >= 96 && data.current.weather_code <= 99) {
+        backgroundPosition = "-450px -150px"; // Thunderstorm with hail
+    } else if ((data.current.weather_code >= 71 && data.current.weather_code <= 77) || 
+               (data.current.weather_code >= 85 && data.current.weather_code <= 86)) {
+        backgroundPosition = "-300px -150px"; // Snow or snow showers
+    }
 
     // Header
     headerTitleText.textContent = `Timezone: ${data?.timezone ?? "-"}`;
+    headerWeatherImage.style.backgroundPosition = backgroundPosition;
     chanceOfRainText.textContent = `Chance of rain: ${parseFloat(data?.daily.precipitation_probability_max) ?? "-"}%`;
     temperatureText.textContent = `${parseFloat(data?.current?.temperature_2m).toFixed(1)}\u00B0C`;
 

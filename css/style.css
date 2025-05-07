@@ -158,7 +158,7 @@ dialog{
     height: 150px;
     background-image: url(../assets/weather.jpg);
     background-repeat: no-repeat;
-    background-position: 0 0;
+    background-position: 150px 150px;
 }
 
 /* Today's Forecasts */
