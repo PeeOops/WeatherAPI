@@ -170,16 +170,16 @@ const weatherInfo = async (lat,lon) => {
             throw new Error(`Error : ${response.status}`)
         }
         const data = await response.json();
-        headerTitleText.textContent = `Timezone: ${data.timezone}`;
-        chanceOfRainText.textContent = `Chance of rain: ${parseFloat(data.daily.precipitation_probability_max)}%`;
-        temperatureText.textContent = `${parseFloat(data.current.temperature_2m).toFixed(1)}\u00B0C`;
-        realFeelText.textContent = `${parseFloat(data.current.apparent_temperature).toFixed(1)}\u00B0C`;
-        windSpeedText.textContent = `${data.current.wind_speed_10m} km/h`;
-        uvIndexText.textContent = `${data.daily.uv_index_max}`;
-        humidityText.textContent = `${data.current.relative_humidity_2m}%`;
+        headerTitleText.textContent = `Timezone: ${data?.timezone ?? "-"}`;
+        chanceOfRainText.textContent = `Chance of rain: ${parseFloat(data?.daily.precipitation_probability_max) ?? "-"}%`;
+        temperatureText.textContent = `${parseFloat(data?.current?.temperature_2m).toFixed(1)}\u00B0C`;
+        realFeelText.textContent = `${parseFloat(data?.current?.apparent_temperature).toFixed(1)}\u00B0C`;
+        windSpeedText.textContent = `${data?.current?.wind_speed_10m ?? "-"} km/h`;
+        uvIndexText.textContent = `${data?.daily?.uv_index_max ?? "-"}`;
+        humidityText.textContent = `${data?.current?.relative_humidity_2m ?? "-"}%`;
         const currentWeatherCondition = weatherCodes.find(weather => weather.code === data.current.weather_code);
-        currentWeatherText.textContent = currentWeatherCondition.description;
-        dayNightText.textContent = data.current.is_day === 1 ? "Day" : "Night";
+        currentWeatherText.textContent = currentWeatherCondition?.description ?? "-";
+        dayNightText.textContent = data?.current?.is_day === 1 ? "Day" : data?.current?.is_day === 0 ? "Night" : "-";
 
 
     } catch (error) {
