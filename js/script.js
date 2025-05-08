@@ -163,6 +163,7 @@ const showCityLists = () => {
             const cityLat = city.lat;
             const cityLon = city.lon;
             weatherInfo(cityLat, cityLon);
+            sevenDayForecasts(cityLat, cityLon);
         })
 
         cityListText.appendChild(listCity);
@@ -191,8 +192,7 @@ const showWeather = (data) => {
     chanceOfRainText.textContent = `Chance of rain: ${parseFloat(data?.daily.precipitation_probability_max) ?? "-"}%`;
     temperatureText.textContent = `${parseFloat(data?.current?.temperature_2m).toFixed(1)}\u00B0C`;
 
-    // Today's forecasts
-
+    // Today's forecasts    
     todayForecasts.innerHTML = "";
     for(let i = 0; i < data.hourly.weather_code.length; i = i + 4){
         const todayImagePosition = weatherCodes.find(weather => weather.code === data.hourly.weather_code[i]);
@@ -216,6 +216,11 @@ const showWeather = (data) => {
     dayNightText.textContent = data?.current?.is_day === 1 ? "Day" : data?.current?.is_day === 0 ? "Night" : "-";
 }
 
+// Show 7 day forecasts
+const showSevenDayForecasts = (data) => {
+
+}
+
 // Loading on fetch
 const loadingWeather = () => {
     headerTitleText.textContent = "Loading weather...";
@@ -224,7 +229,7 @@ const loadingWeather = () => {
 }
 
 
-// Fetch weather information
+// Fetch current weather information
 const weatherInfo = async (lat,lon) => {
     try {
         
@@ -238,7 +243,7 @@ const weatherInfo = async (lat,lon) => {
             }
         );
         if(!response.ok){
-            throw new Error(`Error : ${response.status}`)
+            throw new Error(`Error : ${response.status}`);
         }
         const data = await response.json();
         showWeather(data);
@@ -250,6 +255,29 @@ const weatherInfo = async (lat,lon) => {
     }
 }
 
+// Fetch 7-day forecasts
+const sevenDayForecasts = async (lat, lon) => {
+    try {
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=weather_code,temperature_2m_max,temperature_2m_min,apparent_temperature_max,apparent_temperature_min&timezone=auto`,
+            {
+                headers: {
+                    "User-Agent": "WeatherAPI/1.0 (https://github.com/PeeOops)"
+                }
+            }
+        )
+
+        if(!response.ok){
+            throw new Error(`Error : ${response.status}`);
+        }
+
+        const data = await response.json();
+        showSevenDayForecasts(data);
+
+    } catch (error) {
+        console.log(`Fetch failed:`, error.message);
+        alert("An error occurred while fetching weather information.");
+    }
+}
 
 
 // Add city button
