@@ -230,7 +230,13 @@ const weatherInfo = async (lat,lon) => {
         
         loadingWeather();
 
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max&hourly=weather_code,temperature_2m,is_day&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,precipitation,is_day&timezone=auto&forecast_days=1`);
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max&hourly=weather_code,temperature_2m,is_day&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,precipitation,is_day&timezone=auto&forecast_days=1`,
+            {
+                headers: {
+                    "User-Agent": "WeatherAPI/1.0 (https://github.com/PeeOops)"
+                }
+            }
+        );
         if(!response.ok){
             throw new Error(`Error : ${response.status}`)
         }
