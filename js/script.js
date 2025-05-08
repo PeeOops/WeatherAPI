@@ -58,49 +58,49 @@ const defaultCity = [
 
 const weatherCodes = [
     // Clear & Cloudy
-    { code: 0, description: "Clear sky" },
-    { code: 1, description: "Mainly clear" },
-    { code: 2, description: "Partly cloudy" },
-    { code: 3, description: "Overcast" },
+    { code: 0, description: "Clear sky", position: "-430px -10px" },
+    { code: 1, description: "Mainly clear", position: "-300px 0" },
+    { code: 2, description: "Partly cloudy", position: "-150px 0" },
+    { code: 3, description: "Overcast", position: "0 -20px" },
   
     // Fog & Visibility
-    { code: 45, description: "Fog" },
-    { code: 48, description: "Depositing rime fog" },
+    { code: 45, description: "Fog", position: "-300px -300px" },
+    { code: 48, description: "Depositing rime fog", position: "-300px -300px" },
   
     // Drizzle
-    { code: 51, description: "Light drizzle" },
-    { code: 53, description: "Moderate drizzle" },
-    { code: 55, description: "Dense drizzle" },
-    { code: 56, description: "Light freezing drizzle" },
-    { code: 57, description: "Dense freezing drizzle" },
+    { code: 51, description: "Light drizzle", position: "0 -150px" },
+    { code: 53, description: "Moderate drizzle", position: "0 -150px" },
+    { code: 55, description: "Dense drizzle", position: "0 -150px" },
+    { code: 56, description: "Light freezing drizzle", position: "0 -150px" },
+    { code: 57, description: "Dense freezing drizzle", position: "0 -150px" },
   
     // Rain
-    { code: 61, description: "Slight rain" },
-    { code: 63, description: "Moderate rain" },
-    { code: 65, description: "Heavy rain" },
-    { code: 66, description: "Light freezing rain" },
-    { code: 67, description: "Heavy freezing rain" },
+    { code: 61, description: "Slight rain", position: "0 -150px" },
+    { code: 63, description: "Moderate rain", position: "0 -150px" },
+    { code: 65, description: "Heavy rain", position: "0 -150px" },
+    { code: 66, description: "Light freezing rain", position: "0 -150px" },
+    { code: 67, description: "Heavy freezing rain", position: "0 -150px" },
   
     // Snow
-    { code: 71, description: "Slight snow fall" },
-    { code: 73, description: "Moderate snow fall" },
-    { code: 75, description: "Heavy snow fall" },
-    { code: 77, description: "Snow grains" },
+    { code: 71, description: "Slight snow fall", position: "-300px -150px" },
+    { code: 73, description: "Moderate snow fall", position: "-300px -150px" },
+    { code: 75, description: "Heavy snow fall", position: "-300px -150px" },
+    { code: 77, description: "Snow grains", position: "-300px -150px" },
   
     // Rain Showers
-    { code: 80, description: "Slight rain showers" },
-    { code: 81, description: "Moderate rain showers" },
-    { code: 82, description: "Violent rain showers" },
+    { code: 80, description: "Slight rain showers", position: "0 -150px" },
+    { code: 81, description: "Moderate rain showers", position: "0 -150px" },
+    { code: 82, description: "Violent rain showers", position: "0 -150px" },
   
     // Snow Showers
-    { code: 85, description: "Slight snow showers" },
-    { code: 86, description: "Heavy snow showers" },
+    { code: 85, description: "Slight snow showers", position: "-300px -150px" },
+    { code: 86, description: "Heavy snow showers", position: "-300px -150px" },
   
     // Thunderstorms
-    { code: 95, description: "Thunderstorm (no hail)" },
-    { code: 96, description: "Thunderstorm with slight hail" },
-    { code: 99, description: "Thunderstorm with heavy hail" }
-  ];
+    { code: 95, description: "Thunderstorm (no hail)", position: "-150px -150px" },
+    { code: 96, description: "Thunderstorm with slight hail", position: "-450px -150px" },
+    { code: 99, description: "Thunderstorm with heavy hail", position: "-450px -150px" }
+];
 
 // Set localStorage
 if(!localStorage.getItem("cities")){
@@ -177,31 +177,17 @@ const showCityLists = () => {
 // Show weather information
 
 const showWeather = (data) => {
-    // Weather Image
+    // Header Weather Image
     let backgroundPosition = "";
-    if (data.current.weather_code === 0 && data.current.is_day === 1) {
-        backgroundPosition = "-430px -10px"; // Clear day
-    } else if (data.current.weather_code === 0 && data.current.is_day === 0) {
-        backgroundPosition = "-450px -300px"; // Clear night
-    } else if ((data.current.weather_code >= 1 && data.current.weather_code <= 3) && data.current.is_day === 0) {
-        backgroundPosition = "-150px -295px"; // Cloudy night
-    } else if (data.current.weather_code === 3) {
-        backgroundPosition = "0 -20px"; // Overcast
-    } else if (data.current.weather_code === 2) {
-        backgroundPosition = "-150px 0"; // Partly cloudy
-    } else if (data.current.weather_code === 1) {
-        backgroundPosition = "-300px 0"; // Mostly clear
-    } else if (data.current.weather_code >= 45 && data.current.weather_code <= 48) {
-        backgroundPosition = "-300px -300px"; // Fog or rime fog
-    } else if ((data.current.weather_code >= 51 && data.current.weather_code <= 67) || (data.current.weather_code >= 80 && data.current.weather_code <= 82)) {
-        backgroundPosition = "0 -150px"; // Drizzle or rain showers
-    } else if (data.current.weather_code === 95) {
-        backgroundPosition = "-150px -150px"; // Thunderstorm
-    } else if (data.current.weather_code >= 96 && data.current.weather_code <= 99) {
-        backgroundPosition = "-450px -150px"; // Thunderstorm with hail
-    } else if ((data.current.weather_code >= 71 && data.current.weather_code <= 77) || 
-               (data.current.weather_code >= 85 && data.current.weather_code <= 86)) {
-        backgroundPosition = "-300px -150px"; // Snow or snow showers
+    const weatherBackgroundPosition = weatherCodes.find(weather => weather.code === data.current.weather_code);
+    if(weatherBackgroundPosition.code === 0 && data.current.is_day === 1){
+        backgroundPosition = "-430px -10px";
+    }else if(weatherBackgroundPosition.code === 0 && data.current.is_day === 0){
+        backgroundPosition = "-450px -300px";
+    }else if((weatherBackgroundPosition.code >= 1 && weatherBackgroundPosition.code <= 3) && data.current.is_day === 0){
+        backgroundPosition = "-150px -295px";
+    }else{
+        backgroundPosition = weatherBackgroundPosition.position;
     }
 
     // Header
@@ -211,6 +197,10 @@ const showWeather = (data) => {
     temperatureText.textContent = `${parseFloat(data?.current?.temperature_2m).toFixed(1)}\u00B0C`;
 
     // Today's forecasts
+
+    
+
+
     tempOneText.textContent = `${data?.hourly?.temperature_2m[0] ?? "-"}\u00B0C`;
     tempTwoText.textContent = `${data?.hourly?.temperature_2m[3] ?? "-"}\u00B0C`;
     tempThreeText.textContent = `${data?.hourly?.temperature_2m[7] ?? "-"}\u00B0C`;
