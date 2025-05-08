@@ -74,7 +74,7 @@ dialog{
     flex-direction: column;
     align-items: center;
     gap: 25px;
-    padding: 15px 30px;
+    padding: 15px 8px;
     height: 100%;
 }
 
@@ -113,10 +113,19 @@ dialog{
 
 .cities p{
     font-weight: bold;
+    font-size: 15px;
     border-radius: 5px;
     box-shadow: 3px 3px 3px rgba(0,0,0,0.7);
     padding: 10px 10px;
     cursor: pointer;
+}
+
+.brackets{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
 }
 
 .cities-default{

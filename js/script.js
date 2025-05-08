@@ -148,10 +148,21 @@ const showCityLists = () => {
     }
 
     cityLists.forEach(city => {
+        // Group city and delete buttons
+        const bracketCity = document.createElement("div");
+        bracketCity.classList.add("brackets");
+        cityListText.appendChild(bracketCity);
+
+        // City list
         const listCity = document.createElement("p");
         listCity.textContent = `${city.city}, ${city.country}`;
         listCity.classList.add("cities-default");
 
+        // Delete button
+        const deleteCity = document.createElement("p");
+        deleteCity.textContent = "X";
+        deleteCity.classList.add("cities-default");
+        
         listCity.addEventListener("click", () => {
             // Remove 'selected' class from all <p> tags inside cityListText
             const allCities = cityListText.querySelectorAll("p");
@@ -165,7 +176,22 @@ const showCityLists = () => {
             sevenDayForecasts(cityLat, cityLon);
         })
 
-        cityListText.appendChild(listCity);
+        deleteCity.addEventListener("click", () => {
+            const cityLists = JSON.parse(localStorage.getItem("cities") || "[]");
+
+            const findCity = cityLists.findIndex(list => list.city === city.city || list.country === city.country);
+
+            if(findCity !== -1){
+                cityLists.splice(findCity,1);
+
+                localStorage.setItem("cities", JSON.stringify(cityLists));
+            }
+
+            showCityLists();
+        })
+
+        bracketCity.appendChild(listCity);
+        bracketCity.appendChild(deleteCity);
     });
 }
 
