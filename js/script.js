@@ -15,12 +15,7 @@ const uvIndexText = document.getElementById("uv-index");
 const humidityText = document.getElementById("humidity");
 const currentWeatherText = document.getElementById("current-weather");
 const dayNightText = document.getElementById("day-night");
-const tempOneText = document.getElementById("temp-1");
-const tempTwoText = document.getElementById("temp-2");
-const tempThreeText = document.getElementById("temp-3");
-const tempFourText = document.getElementById("temp-4");
-const tempFiveText = document.getElementById("temp-5");
-const tempSixText = document.getElementById("temp-6");
+const todayForecasts = document.getElementById("today-forecasts");
 const contentDisplay = document.getElementById("content");
 const sevenDayForecastsDisplay = document.getElementById("forecasts");
 
@@ -58,49 +53,49 @@ const defaultCity = [
 
 const weatherCodes = [
     // Clear & Cloudy
-    { code: 0, description: "Clear sky", position: "-430px -10px" },
-    { code: 1, description: "Mainly clear", position: "-300px 0" },
-    { code: 2, description: "Partly cloudy", position: "-150px 0" },
-    { code: 3, description: "Overcast", position: "0 -20px" },
+    { code: 0, description: "Clear sky", headerPosition: "-430px -10px", todayPosition: "-215px -5px" },
+    { code: 1, description: "Mainly clear", headerPosition: "-300px 0", todayPosition: "-150px 0px" },
+    { code: 2, description: "Partly cloudy", headerPosition: "-150px 0", todayPosition: "-75px 0px" },
+    { code: 3, description: "Overcast", headerPosition: "0 -20px", todayPosition: "0px -10px" },
   
     // Fog & Visibility
-    { code: 45, description: "Fog", position: "-300px -300px" },
-    { code: 48, description: "Depositing rime fog", position: "-300px -300px" },
+    { code: 45, description: "Fog", headerPosition: "-300px -300px", todayPosition: "-150px -150px" },
+    { code: 48, description: "Depositing rime fog", headerPosition: "-300px -300px", todayPosition: "-150px -150px" },
   
     // Drizzle
-    { code: 51, description: "Light drizzle", position: "0 -150px" },
-    { code: 53, description: "Moderate drizzle", position: "0 -150px" },
-    { code: 55, description: "Dense drizzle", position: "0 -150px" },
-    { code: 56, description: "Light freezing drizzle", position: "0 -150px" },
-    { code: 57, description: "Dense freezing drizzle", position: "0 -150px" },
+    { code: 51, description: "Light drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 53, description: "Moderate drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 55, description: "Dense drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 56, description: "Light freezing drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 57, description: "Dense freezing drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
   
     // Rain
-    { code: 61, description: "Slight rain", position: "0 -150px" },
-    { code: 63, description: "Moderate rain", position: "0 -150px" },
-    { code: 65, description: "Heavy rain", position: "0 -150px" },
-    { code: 66, description: "Light freezing rain", position: "0 -150px" },
-    { code: 67, description: "Heavy freezing rain", position: "0 -150px" },
+    { code: 61, description: "Slight rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 63, description: "Moderate rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 65, description: "Heavy rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 66, description: "Light freezing rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 67, description: "Heavy freezing rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
   
     // Snow
-    { code: 71, description: "Slight snow fall", position: "-300px -150px" },
-    { code: 73, description: "Moderate snow fall", position: "-300px -150px" },
-    { code: 75, description: "Heavy snow fall", position: "-300px -150px" },
-    { code: 77, description: "Snow grains", position: "-300px -150px" },
+    { code: 71, description: "Slight snow fall", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
+    { code: 73, description: "Moderate snow fall", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
+    { code: 75, description: "Heavy snow fall", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
+    { code: 77, description: "Snow grains", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
   
     // Rain Showers
-    { code: 80, description: "Slight rain showers", position: "0 -150px" },
-    { code: 81, description: "Moderate rain showers", position: "0 -150px" },
-    { code: 82, description: "Violent rain showers", position: "0 -150px" },
+    { code: 80, description: "Slight rain showers", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 81, description: "Moderate rain showers", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 82, description: "Violent rain showers", headerPosition: "0 -150px", todayPosition: "0px -75px" },
   
     // Snow Showers
-    { code: 85, description: "Slight snow showers", position: "-300px -150px" },
-    { code: 86, description: "Heavy snow showers", position: "-300px -150px" },
+    { code: 85, description: "Slight snow showers", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
+    { code: 86, description: "Heavy snow showers", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
   
     // Thunderstorms
-    { code: 95, description: "Thunderstorm (no hail)", position: "-150px -150px" },
-    { code: 96, description: "Thunderstorm with slight hail", position: "-450px -150px" },
-    { code: 99, description: "Thunderstorm with heavy hail", position: "-450px -150px" }
-];
+    { code: 95, description: "Thunderstorm (no hail)", headerPosition: "-150px -150px", todayPosition: "-75px -75px" },
+    { code: 96, description: "Thunderstorm with slight hail", headerPosition: "-450px -150px", todayPosition: "-225px -75px" },
+    { code: 99, description: "Thunderstorm with heavy hail", headerPosition: "-450px -150px", todayPosition: "-225px -75px" }
+  ];
 
 // Set localStorage
 if(!localStorage.getItem("cities")){
@@ -187,7 +182,7 @@ const showWeather = (data) => {
     }else if((weatherBackgroundPosition.code >= 1 && weatherBackgroundPosition.code <= 3) && data.current.is_day === 0){
         backgroundPosition = "-150px -295px";
     }else{
-        backgroundPosition = weatherBackgroundPosition.position;
+        backgroundPosition = weatherBackgroundPosition.headerPosition;
     }
 
     // Header
@@ -198,15 +193,18 @@ const showWeather = (data) => {
 
     // Today's forecasts
 
-    
+    todayForecasts.innerHTML = "";
+    for(let i = 0; i < data.hourly.weather_code.length; i = i + 4){
+        const todayImagePosition = weatherCodes.find(weather => weather.code === data.hourly.weather_code[i]);
 
-
-    tempOneText.textContent = `${data?.hourly?.temperature_2m[0] ?? "-"}\u00B0C`;
-    tempTwoText.textContent = `${data?.hourly?.temperature_2m[3] ?? "-"}\u00B0C`;
-    tempThreeText.textContent = `${data?.hourly?.temperature_2m[7] ?? "-"}\u00B0C`;
-    tempFourText.textContent = `${data?.hourly?.temperature_2m[11] ?? "-"}\u00B0C`;
-    tempFiveText.textContent = `${data?.hourly?.temperature_2m[15] ?? "-"}\u00B0C`;
-    tempSixText.textContent = `${data?.hourly?.temperature_2m[19] ?? "-"}\u00B0C`;
+        todayForecasts.innerHTML += `
+            <div class="time">
+                <p>${i}:00 ${i >= 12 ? "PM" : "AM"}</p>
+                <div class="today-weather" style="background-position: ${(data?.hourly?.is_day[i] === 0 && todayImagePosition?.code === 0) ? "-225px -150px" : (todayImagePosition?.code >= 1 && todayImagePosition?.code <= 3) && data?.hourly?.is_day[i] === 0 ? "-75px -147px" : todayImagePosition?.todayPosition }"></div>
+                <p>${data?.hourly?.temperature_2m[i] ?? "-"}\u00B0C</p>
+            </div>
+        `
+    }
 
     // Air condition
     realFeelText.textContent = `${parseFloat(data?.current?.apparent_temperature).toFixed(1)}\u00B0C`;
@@ -232,7 +230,7 @@ const weatherInfo = async (lat,lon) => {
         
         loadingWeather();
 
-        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max&hourly=weather_code,temperature_2m&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,precipitation,is_day&timezone=auto&forecast_days=1`);
+        const response = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&daily=uv_index_max,precipitation_probability_max&hourly=weather_code,temperature_2m,is_day&current=temperature_2m,relative_humidity_2m,apparent_temperature,wind_speed_10m,weather_code,precipitation,is_day&timezone=auto&forecast_days=1`);
         if(!response.ok){
             throw new Error(`Error : ${response.status}`)
         }

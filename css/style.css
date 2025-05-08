@@ -191,7 +191,7 @@ dialog{
     background-image: url(../assets/weather.jpg);
     background-size: 300px 300px;
     background-repeat: no-repeat;
-    background-position: -150px -10px;
+    background-position: 150px 150px;
 }
 
 /* Air conditions */
