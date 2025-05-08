@@ -225,15 +225,21 @@ dialog{
 .forecasts{
     display: flex;
     flex-direction: column;
-    padding: 15px 50px;
+    padding: 15px 40px;
     gap: 35px;
+}
+
+#forecasts{
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
 }
 
 .forecast{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    font-size: 18px;
+    font-size: 15px;
 }
 
 .temp-feel{
@@ -242,8 +248,7 @@ dialog{
 
 .copyright{
     display: flex;
-    justify-content: center;
+    flex-direction: column;
+    justify-content: flex-end;
     align-items: center;
-    margin-top: 30px;
-
-}
+}       

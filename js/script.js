@@ -16,7 +16,6 @@ const humidityText = document.getElementById("humidity");
 const currentWeatherText = document.getElementById("current-weather");
 const dayNightText = document.getElementById("day-night");
 const todayForecasts = document.getElementById("today-forecasts");
-const contentDisplay = document.getElementById("content");
 const sevenDayForecastsDisplay = document.getElementById("forecasts");
 
 
@@ -218,7 +217,28 @@ const showWeather = (data) => {
 
 // Show 7 day forecasts
 const showSevenDayForecasts = (data) => {
+    sevenDayForecastsDisplay.innerHTML = "";
 
+    for(let i = 0; i <= 6; i++){
+        const date = data?.daily?.time[i];
+        const weather = weatherCodes.find(weather => weather.code === data?.daily?.weather_code[i]);
+        const maxTemperature = parseFloat(data?.daily?.temperature_2m_max[i]);
+        const minTemperature = parseFloat(data?.daily?.temperature_2m_min[i]);
+        const apparentMaxTemp = parseFloat(data?.daily?.apparent_temperature_max[i]);
+        const apparentMinTemp = parseFloat(data?.daily?.apparent_temperature_min[i]);
+
+        sevenDayForecastsDisplay.innerHTML += `
+            <div class="forecast">
+                <p>${date.slice(-2)}-${date.substr(5,2)}-${date.substr(0,4)}</p>
+                <p>${weather?.description}</p>
+                <p>${((maxTemperature + minTemperature) / 2).toFixed(1)}/<span class="temp-feel">${((apparentMaxTemp + apparentMinTemp) / 2).toFixed(1)}</span></p>
+            </div>
+        `
+    }
+
+
+
+    
 }
 
 // Loading on fetch
