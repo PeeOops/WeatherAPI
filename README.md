@@ -6,7 +6,8 @@ A modern, responsive weather dashboard built using **Vanilla JavaScript**, **HTM
 
 ## 📸 Screenshots
 
-*screenshots upcoming*
+![Screenshot](assets/screenshots/web.png)
+
 
 ---
 
