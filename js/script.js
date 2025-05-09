@@ -52,28 +52,28 @@ const defaultCity = [
 
 const weatherCodes = [
     // Clear & Cloudy
-    { code: 0, description: "Clear sky", headerPosition: "-430px -10px", todayPosition: "-215px -5px" },
-    { code: 1, description: "Mainly clear", headerPosition: "-300px 0", todayPosition: "-150px 0px" },
-    { code: 2, description: "Partly cloudy", headerPosition: "-150px 0", todayPosition: "-75px 0px" },
-    { code: 3, description: "Overcast", headerPosition: "0 -20px", todayPosition: "0px -10px" },
+    { code: 0, description: "Clear sky", headerPosition: "-430px -10px", todayPosition: "-218px -13px" },
+    { code: 1, description: "Mainly clear", headerPosition: "-300px 0", todayPosition: "-150px -10px" },
+    { code: 2, description: "Partly cloudy", headerPosition: "-150px 0", todayPosition: "-79px -10px" },
+    { code: 3, description: "Overcast", headerPosition: "0 -20px", todayPosition: "-10px -12px" },
   
     // Fog & Visibility
     { code: 45, description: "Fog", headerPosition: "-300px -300px", todayPosition: "-150px -150px" },
     { code: 48, description: "Depositing rime fog", headerPosition: "-300px -300px", todayPosition: "-150px -150px" },
   
     // Drizzle
-    { code: 51, description: "Light drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 53, description: "Moderate drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 55, description: "Dense drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 56, description: "Light freezing drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 57, description: "Dense freezing drizzle", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 51, description: "Light drizzle", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 53, description: "Moderate drizzle", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 55, description: "Dense drizzle", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 56, description: "Light freezing drizzle", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 57, description: "Dense freezing drizzle", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
   
     // Rain
-    { code: 61, description: "Slight rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 63, description: "Moderate rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 65, description: "Heavy rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 66, description: "Light freezing rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 67, description: "Heavy freezing rain", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 61, description: "Slight rain", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 63, description: "Moderate rain", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 65, description: "Heavy rain", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 66, description: "Light freezing rain", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 67, description: "Heavy freezing rain", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
   
     // Snow
     { code: 71, description: "Slight snow fall", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
@@ -82,9 +82,9 @@ const weatherCodes = [
     { code: 77, description: "Snow grains", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
   
     // Rain Showers
-    { code: 80, description: "Slight rain showers", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 81, description: "Moderate rain showers", headerPosition: "0 -150px", todayPosition: "0px -75px" },
-    { code: 82, description: "Violent rain showers", headerPosition: "0 -150px", todayPosition: "0px -75px" },
+    { code: 80, description: "Slight rain showers", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 81, description: "Moderate rain showers", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
+    { code: 82, description: "Violent rain showers", headerPosition: "0 -150px", todayPosition: "-10px -80px" },
   
     // Snow Showers
     { code: 85, description: "Slight snow showers", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
@@ -92,8 +92,8 @@ const weatherCodes = [
   
     // Thunderstorms
     { code: 95, description: "Thunderstorm (no hail)", headerPosition: "-150px -150px", todayPosition: "-75px -75px" },
-    { code: 96, description: "Thunderstorm with slight hail", headerPosition: "-450px -150px", todayPosition: "-225px -75px" },
-    { code: 99, description: "Thunderstorm with heavy hail", headerPosition: "-450px -150px", todayPosition: "-225px -75px" }
+    { code: 96, description: "Thunderstorm with slight hail", headerPosition: "-450px -150px", todayPosition: "-218px -81px" },
+    { code: 99, description: "Thunderstorm with heavy hail", headerPosition: "-450px -150px", todayPosition: "-218px -81px" }
   ];
 
 // Set localStorage
@@ -225,7 +225,7 @@ const showWeather = (data) => {
         todayForecasts.innerHTML += `
             <div class="time">
                 <p>${i}:00 ${i >= 12 ? "PM" : "AM"}</p>
-                <div class="today-weather" style="background-position: ${(data?.hourly?.is_day[i] === 0 && todayImagePosition?.code === 0) ? "-225px -150px" : (todayImagePosition?.code >= 1 && todayImagePosition?.code <= 3) && data?.hourly?.is_day[i] === 0 ? "-75px -147px" : todayImagePosition?.todayPosition }"></div>
+                <div class="today-weather" style="background-position: ${(data?.hourly?.is_day[i] === 0 && todayImagePosition?.code === 0) ? "-218px -153px" : (todayImagePosition?.code >= 1 && todayImagePosition?.code <= 3) && data?.hourly?.is_day[i] === 0 ? "-78px -149px" : todayImagePosition?.todayPosition }"></div>
                 <p>${data?.hourly?.temperature_2m[i] ?? "-"}\u00B0C</p>
             </div>
         `
