@@ -188,11 +188,46 @@ const showCityLists = () => {
             }
 
             showCityLists();
+            clearData();
         })
 
         bracketCity.appendChild(listCity);
         bracketCity.appendChild(deleteCity);
     });
+}
+
+const clearData = () => {
+    todayForecasts.innerHTML = "";
+    sevenDayForecastsDisplay.innerHTML = "";
+    headerTitleText.textContent = "Timezone: -";
+    chanceOfRainText.textContent = "Chance of rain: -";
+    temperatureText.textContent = "-";
+    headerWeatherImage.style.backgroundPosition = "150px 150px";
+    for(let i = 0; i < 24; i = i + 4){
+        todayForecasts.innerHTML += `
+            <div class="time">
+                <p>${i}:00 ${i >= 12 ? "PM" : "AM"}</p>
+                <div class="today-weather" style="background-position: 150px 150px"></div>
+                <p>-</p>
+            </div>
+        `
+    }
+    realFeelText.textContent = "-";
+    uvIndexText.textContent = "-";
+    windSpeedText.textContent = "-";
+    humidityText.textContent = "-";
+    currentWeatherText.textContent = "-";
+    dayNightText.textContent = "-";
+    for(let i = 0; i <= 6; i++){
+        sevenDayForecastsDisplay.innerHTML += `
+            <div class="forecast">
+                <p>-</p>
+                <p>-</p>
+                <p>-/</span>-</p>
+            </div>
+        `;
+    }
+    
 }
 
 // Show weather information
@@ -261,17 +296,40 @@ const showSevenDayForecasts = (data) => {
             </div>
         `
     }
-
-
-
-    
 }
 
 // Loading on fetch
 const loadingWeather = () => {
+    todayForecasts.innerHTML = "";
+    sevenDayForecastsDisplay.innerHTML = "";
     headerTitleText.textContent = "Loading weather...";
     chanceOfRainText.textContent = "";
     temperatureText.textContent = "";
+    headerWeatherImage.style.backgroundPosition = "150px 150px";
+    for(let i = 0; i < 24; i = i + 4){
+        todayForecasts.innerHTML += `
+            <div class="time">
+                <p>${i}:00 ${i >= 12 ? "PM" : "AM"}</p>
+                <div class="today-weather" style="background-position: 150px 150px"></div>
+                <p>-</p>
+            </div>
+        `
+    }
+    realFeelText.textContent = "-";
+    uvIndexText.textContent = "-";
+    windSpeedText.textContent = "-";
+    humidityText.textContent = "-";
+    currentWeatherText.textContent = "-";
+    dayNightText.textContent = "-";
+    for(let i = 0; i <= 6; i++){
+        sevenDayForecastsDisplay.innerHTML += `
+            <div class="forecast">
+                <p>-</p>
+                <p>-</p>
+                <p>-/</span>-</p>
+            </div>
+        `;
+    }
 }
 
 
