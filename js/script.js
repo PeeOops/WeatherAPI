@@ -91,7 +91,7 @@ const weatherCodes = [
     { code: 86, description: "Heavy snow showers", headerPosition: "-300px -150px", todayPosition: "-150px -75px" },
   
     // Thunderstorms
-    { code: 95, description: "Thunderstorm (no hail)", headerPosition: "-150px -150px", todayPosition: "-75px -75px" },
+    { code: 95, description: "Thunderstorm (no hail)", headerPosition: "-150px -150px", todayPosition: "-78px -80px" },
     { code: 96, description: "Thunderstorm with slight hail", headerPosition: "-450px -150px", todayPosition: "-218px -81px" },
     { code: 99, description: "Thunderstorm with heavy hail", headerPosition: "-450px -150px", todayPosition: "-218px -81px" }
   ];
