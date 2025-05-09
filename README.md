@@ -21,7 +21,7 @@ A modern, responsive weather dashboard built using **Vanilla JavaScript**, **HTM
 - 📆 **7-day forecast UI layout** (Get 7-day weather forecasts with average and apparent temperatures.)
 - 🌈 **Dynamic weather icons** based on Open-Meteo weather codes
 - 🧠 **Null-safe rendering** and fallback defaults
-- 🧱 **Minimal CSS Grid layout**, mobile-friendly
+- 🧱 **Mobile responsive**, (UPCOMING)
 
 ---
 
